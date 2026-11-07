@@ -1,0 +1,62 @@
+name: Selenium Java CI/CD with TestNG and Chrome
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  selenium-tests:
+    name: Run Selenium TestNG Automation
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository source code
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Java JDK 17 (Eclipse Temurin)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      # Step 3: Install / Verify Google Chrome Stable on Ubuntu Runner
+      - name: Set up Google Chrome
+        run: |
+          if ! command -v google-chrome &> /dev/null; then
+            echo "Installing Google Chrome Stable..."
+            sudo apt-get update
+            sudo apt-get install -y wget curl gnupg
+            wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg
+            echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install -y google-chrome-stable
+          else
+            echo "Google Chrome is already installed on the runner."
+          fi
+
+      # Step 4: Verify installed versions
+      - name: Verify Java, Maven, and Chrome Versions
+        run: |
+          echo "==================== TOOL VERSIONS ===================="
+          java -version
+          mvn -version
+          google-chrome --version
+          echo "======================================================="
+
+      # Step 5: Execute Selenium TestNG tests via Maven
+      - name: Execute Selenium Tests
+        run: mvn clean test
+
+      # Step 6: Upload TestNG execution reports as artifacts
+      - name: Upload TestNG Reports Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: testng-reports
+          path: target/surefire-reports/
+          retention-days: 14

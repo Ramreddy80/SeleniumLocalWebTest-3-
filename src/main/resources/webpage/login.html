@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Automation Portal - Login</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 20px;
+        }
+
+        #loginBox {
+            background-color: lightblue;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        #loginBox:hover {
+            transform: translateY(-4px);
+        }
+
+        h2 {
+            color: #1e3c72;
+            font-size: 26px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #a0c4e2;
+            border-radius: 6px;
+            font-size: 15px;
+            background: #ffffff;
+            color: #333333;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #1e3c72;
+            box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.2);
+        }
+
+        #loginButton {
+            width: 100%;
+            padding: 13px;
+            background-color: #1e3c72;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        #loginButton:hover {
+            background-color: #162d55;
+            box-shadow: 0 4px 12px rgba(22, 45, 85, 0.35);
+        }
+
+        #loginButton:active {
+            transform: scale(0.99);
+        }
+
+        #message {
+            margin-top: 22px;
+            font-size: 15px;
+            font-weight: 600;
+            min-height: 24px;
+            padding: 8px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .success {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+
+        .demo-hint {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #4a6572;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loginBox">
+        <h2>Welcome to DevOps</h2>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter username" autocomplete="off" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit" id="loginButton">Login</button>
+        </form>
+
+        <div id="message"></div>
+
+        <div class="demo-hint">
+            <strong>Demo Credentials:</strong> student / 12345
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const usernameInput = document.getElementById('username').value.trim();
+            const passwordInput = document.getElementById('password').value.trim();
+            const messageElement = document.getElementById('message');
+
+            if (usernameInput === 'student' && passwordInput === '12345') {
+                messageElement.textContent = 'Welcome to DevOps! Login Successful';
+                messageElement.className = 'success';
+            } else {
+                messageElement.textContent = 'Invalid Username or Password';
+                messageElement.className = 'error';
+            }
+        }
+    </script>
+</body>
+</html>
